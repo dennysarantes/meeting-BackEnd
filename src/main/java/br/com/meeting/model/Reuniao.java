@@ -1,6 +1,7 @@
 package br.com.meeting.model;
 
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 import br.com.meeting.dto.ReuniaoDTO;
 
@@ -21,8 +21,8 @@ public class Reuniao {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String titulo;
-	private Date dataCadastro;
-	private Date dataAgendamento;
+	private LocalDate dataCadastro;
+	private LocalDate dataAgendamento;
 	private Time horarioAgendamento; //Time.valueOf("18:45:20");
 	private Time duracao;
 	private String local;
@@ -38,18 +38,6 @@ public class Reuniao {
 	
 	public Reuniao() {}
 	
-	public Reuniao(ReuniaoDTO reuniaoDTO, List<Usuario> participantes, List<Item> itens) {
-		
-		this.dataAgendamento = reuniaoDTO.getDataAgendamento();
-		this.dataCadastro = reuniaoDTO.getDataCadastro();
-		this.duracao = reuniaoDTO.getDuracao();
-		this.horarioAgendamento = reuniaoDTO.getHorarioAgendamento();
-		this.itens = itens;
-		this.local = reuniaoDTO.getLocal();
-		this.participantes = participantes;
-		this.statusReuniao = reuniaoDTO.getStatusReuniao();
-		this.titulo = reuniaoDTO.getTitulo();		
-	}
 
 	public Long getId() {
 		return id;
@@ -83,19 +71,19 @@ public class Reuniao {
 		this.titulo = titulo;
 	}
 
-	public Date getDataCadastro() {
+	public LocalDate getDataCadastro() {
 		return dataCadastro;
 	}
 
-	public void setDataCadastro(Date dataCadastro) {
+	public void setDataCadastro(LocalDate dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
 
-	public Date getDataAgendamento() {
+	public LocalDate getDataAgendamento() {
 		return dataAgendamento;
 	}
 
-	public void setDataAgendamento(Date dataAgendamento) {
+	public void setDataAgendamento(LocalDate dataAgendamento) {
 		this.dataAgendamento = dataAgendamento;
 	}
 
@@ -139,6 +127,18 @@ public class Reuniao {
 	}
 	
 	
+	public Reuniao(ReuniaoDTO reuniaoDTO, List<Usuario> participantes, List<Item> itens) {
+		
+		this.dataAgendamento = LocalDate.parse(reuniaoDTO.getDataAgendamento());
+		this.dataCadastro = LocalDate.parse(reuniaoDTO.getDataCadastro());
+		this.duracao = reuniaoDTO.getDuracao();
+		this.horarioAgendamento = reuniaoDTO.getHorarioAgendamento();
+		this.itens = itens;
+		this.local = reuniaoDTO.getLocal();
+		this.participantes = participantes;
+		this.statusReuniao = reuniaoDTO.getStatusReuniao();
+		this.titulo = reuniaoDTO.getTitulo();		
+	}
 	
 	
 }

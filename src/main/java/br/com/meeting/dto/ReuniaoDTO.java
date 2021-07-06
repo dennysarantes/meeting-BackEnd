@@ -1,18 +1,13 @@
 package br.com.meeting.dto;
 
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 import br.com.meeting.model.Item;
 import br.com.meeting.model.Reuniao;
@@ -25,8 +20,8 @@ public class ReuniaoDTO {
 	
 	private Long id;
 	private String titulo;
-	private Date dataCadastro;
-	private Date dataAgendamento;
+	private LocalDate dataCadastro;
+	private LocalDate dataAgendamento;
 	private Time horarioAgendamento; //Time.valueOf("18:45:20");
 	private Time duracao;
 	private String local;
@@ -69,19 +64,19 @@ public class ReuniaoDTO {
 		this.titulo = titulo;
 	}
 
-	public Date getDataCadastro() {
-		return dataCadastro;
+	public String getDataCadastro() {
+		return dataCadastro.toString();
 	}
 
-	public void setDataCadastro(Date dataCadastro) {
+	public void setDataCadastro(LocalDate dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
 
-	public Date getDataAgendamento() {
-		return dataAgendamento;
+	public String getDataAgendamento() {
+		return dataAgendamento.toString();
 	}
 
-	public void setDataAgendamento(Date dataAgendamento) {
+	public void setDataAgendamento(LocalDate dataAgendamento) {
 		this.dataAgendamento = dataAgendamento;
 	}
 
