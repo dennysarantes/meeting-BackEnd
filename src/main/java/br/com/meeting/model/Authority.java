@@ -3,7 +3,7 @@ package br.com.meeting.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity(name = "authorities")
+//@Entity(name = "authorities")
 public class Authority {
 		
 		@Id

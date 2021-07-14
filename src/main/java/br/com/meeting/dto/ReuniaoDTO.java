@@ -34,6 +34,10 @@ public class ReuniaoDTO {
 	
 	private List<Long> itens;
 	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -133,7 +137,6 @@ public class ReuniaoDTO {
 		this.participantes = new ArrayList<Long>();
 		
 		reuniao.getParticipantes().forEach(participante -> {
-			System.out.println("nome participante: " + participante.getNome());			
 			this.participantes.add(new UsuarioDTO().toDTOApensaId(participante));
 		});
 			

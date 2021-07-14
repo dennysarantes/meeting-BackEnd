@@ -68,7 +68,7 @@ public class ItemController {
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<Item> cadastrar(@RequestBody ItemDTO itemDTO,
+	public ResponseEntity<ItemDTO> cadastrar(@RequestBody ItemDTO itemDTO,
 			UriComponentsBuilder uriBuilder) {
 		
 		Usuario responsavel = usuarioRepository.findById(itemDTO.getResponsavel()).get();
@@ -76,11 +76,12 @@ public class ItemController {
 		
 		Item item = new Item(itemDTO, responsavel, responsavelCadastrado);
 		
+		
 		try {
 			itemRepository.save(item);
 			URI uri = uriBuilder.path("api/item/{id}").buildAndExpand(item.getId()).toUri();
 			
-			return ResponseEntity.created(uri).body(item);
+			return ResponseEntity.created(uri).body(itemDTO);
 			
 		} catch (Exception e) {
 			return ResponseEntity.internalServerError().build();

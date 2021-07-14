@@ -1,5 +1,6 @@
 package br.com.meeting.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -7,7 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +22,7 @@ public class Item {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String titulo;
-	private Date dataCadastro;
+	private LocalDate dataCadastro;
 	private String descricao;
 	
 	@ManyToOne
@@ -47,7 +47,7 @@ public class Item {
 			Usuario responsavelCadastrado
 			) {
 		
-		this.dataCadastro = itemDTO.getDataCadastro();
+		this.dataCadastro = LocalDate.parse(itemDTO.getDataCadastro());
 		this.descricao = itemDTO.getDescricao();
 		this.responsavel = responsavel;
 		this.responsavelCadastro = responsavelCadastrado;
@@ -75,11 +75,11 @@ public class Item {
 		this.titulo = titulo;
 	}
 
-	public Date getDataCadastro() {
+	public LocalDate getDataCadastro() {
 		return dataCadastro;
 	}
 
-	public void setDataCadastro(Date dataCadastro) {
+	public void setDataCadastro(LocalDate dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
 

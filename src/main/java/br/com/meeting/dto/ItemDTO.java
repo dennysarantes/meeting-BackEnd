@@ -1,14 +1,13 @@
 package br.com.meeting.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import br.com.meeting.model.Acao;
 import br.com.meeting.model.Item;
 import br.com.meeting.model.StatusItem;
 import br.com.meeting.model.Usuario;
@@ -22,7 +21,7 @@ public class ItemDTO implements Serializable{
 	
 	private Long id;
 	private String titulo;
-	private Date dataCadastro;
+	private LocalDate dataCadastro;
 	private String descricao;
 	
 	private Long responsavelCadastro;
@@ -57,11 +56,11 @@ public class ItemDTO implements Serializable{
 		this.titulo = titulo;
 	}
 
-	public Date getDataCadastro() {
-		return dataCadastro;
+	public String getDataCadastro() {
+		return dataCadastro.toString();
 	}
 
-	public void setDataCadastro(Date dataCadastro) {
+	public void setDataCadastro(LocalDate dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
 
