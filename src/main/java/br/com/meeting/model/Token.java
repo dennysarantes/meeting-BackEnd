@@ -7,7 +7,7 @@ public class Token {
     public String username;
     public String email;
     public String localTrabalho;
-    public int nome;
+    public String telefone;
     public String perfil;
     public int iat;
     public int exp;
@@ -20,18 +20,21 @@ public class Token {
 	}
 	
 	
+
+
+
 	/**
 	 * @param sub
 	 * @param nomeCompleto
 	 * @param username
 	 * @param email
 	 * @param localTrabalho
-	 * @param nome
+	 * @param telefone
 	 * @param perfil
 	 * @param iat
 	 * @param exp
 	 */
-	public Token(String sub, String nomeCompleto, String username, String email, String localTrabalho, int nome,
+	public Token(String sub, String nomeCompleto, String username, String email, String localTrabalho, String telefone,
 			String perfil, int iat, int exp) {
 		super();
 		this.sub = sub;
@@ -39,11 +42,14 @@ public class Token {
 		this.username = username;
 		this.email = email;
 		this.localTrabalho = localTrabalho;
-		this.nome = nome;
+		this.telefone = telefone;
 		this.perfil = perfil;
 		this.iat = iat;
 		this.exp = exp;
 	}
+
+
+
 
 
 	public String getSub() {
@@ -76,11 +82,11 @@ public class Token {
 	public void setLocalTrabalho(String localTrabalho) {
 		this.localTrabalho = localTrabalho;
 	}
-	public int getNome() {
-		return nome;
+	public String getTelefone() {
+		return telefone;
 	}
-	public void setNome(int nome) {
-		this.nome = nome;
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 	public String getPerfil() {
 		return perfil;

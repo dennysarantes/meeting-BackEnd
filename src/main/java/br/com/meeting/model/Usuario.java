@@ -1,5 +1,6 @@
 package br.com.meeting.model;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,87 +33,15 @@ public class Usuario implements UserDetails {
 	private String nome;
 	private String email;
 	private String senha;
-	private Integer telefone;
+	private String telefone;
 	private String localTrabalho;
+	private Blob avatar;
 	
 	@ManyToMany(fetch = FetchType.EAGER )
 	private List<Perfil> perfis = new ArrayList<>();
 	
 	
 	
-	
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((localTrabalho == null) ? 0 : localTrabalho.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((perfis == null) ? 0 : perfis.hashCode());
-		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
-		result = prime * result + ((telefone == null) ? 0 : telefone.hashCode());
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Usuario other = (Usuario) obj;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (localTrabalho == null) {
-			if (other.localTrabalho != null)
-				return false;
-		} else if (!localTrabalho.equals(other.localTrabalho))
-			return false;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (perfis == null) {
-			if (other.perfis != null)
-				return false;
-		} else if (!perfis.equals(other.perfis))
-			return false;
-		if (senha == null) {
-			if (other.senha != null)
-				return false;
-		} else if (!senha.equals(other.senha))
-			return false;
-		if (telefone == null) {
-			if (other.telefone != null)
-				return false;
-		} else if (!telefone.equals(other.telefone))
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
-		return true;
-	}
 	public List<Perfil> getPerfis() {
 		return perfis;
 	}
@@ -141,8 +70,18 @@ public class Usuario implements UserDetails {
 //	public void setEnabled(Integer enabled) {
 //		this.enabled = enabled;
 //	}
+	
+	
+	
 	public String getNome() {
 		return nome;
+	}
+	public Blob getAvatar() {
+		return avatar;
+	}
+	
+	public void setAvatar(Blob avatar) {
+		this.avatar = avatar;
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -159,10 +98,10 @@ public class Usuario implements UserDetails {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public Integer getTelefone() {
+	public String getTelefone() {
 		return telefone;
 	}
-	public void setTelefone(Integer telefone) {
+	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
 	public String getLocalTrabalho() {

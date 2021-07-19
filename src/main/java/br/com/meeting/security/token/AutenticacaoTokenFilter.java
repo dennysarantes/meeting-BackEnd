@@ -42,8 +42,13 @@ public class AutenticacaoTokenFilter extends OncePerRequestFilter{
 			System.out.println(token);
 			
 			this.autenticarUsuario(token);
-			
-			tokenService.getTokenDTO(token); //Faz o decode do token e guarda para manipular os dados
+			try {
+				tokenService.getTokenDTO(token); //Faz o decode do token e guarda para manipular os dados
+				
+			} catch (Exception e) {
+				System.out.println("não gravou os dados...");
+				System.out.println(e);
+			}
 			
 		}else {
 			System.out.println("::::::TOKEN não recebido no backend ou Token inválido:::::::::");

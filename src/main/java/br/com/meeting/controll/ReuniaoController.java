@@ -61,7 +61,9 @@ public class ReuniaoController {
 		System.out.println("Extraindo valor no controller");
 		System.out.println("Email no controller: " + guardaTokenService.getToken().getEmail());
 		
-		List<Reuniao> reunioes = (List<Reuniao>) reuniaoRepository.findAll();		
+		Usuario user = usuarioRepository.findByUsername(guardaTokenService.getToken().getUsername()).get();
+		
+		List<Reuniao> reunioes = (List<Reuniao>) reuniaoRepository.findAllByUserID(user.getId());		
 		List<ReuniaoDTO> reunioesDTO = ModelToDTO.deReuniaoParaReuniaoDTO(reunioes);
 		
 		return reunioesDTO;

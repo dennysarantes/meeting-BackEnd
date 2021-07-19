@@ -66,7 +66,7 @@ public class TokenService {
 					(String) body.get("username"),
 					(String) body.get("email"),
 					(String) body.get("localTrabalho"),
-					(Integer) body.get("telefone"),
+					(String) body.get("telefone"),
 					(String) body.get("perfil"),
 					1,
 					1
@@ -83,7 +83,6 @@ public class TokenService {
 			
 			//Esse trecho de código extrai o id do usuário que está dentro do Token!
 			Claims body = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
-			//System.out.println("Pagando o nome: " + body.get("nome"));
 			return Long.parseLong(body.getSubject());
 		}
 		

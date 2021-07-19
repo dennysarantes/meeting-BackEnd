@@ -1,12 +1,8 @@
 package br.com.meeting.dto;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.meeting.model.Usuario;
 
@@ -18,10 +14,11 @@ public class UsuarioDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+	private String username;
 	private String nome;
 	private String email;
-	//private String senha;
-	private Integer telefone;
+	private String senha;
+	private String telefone;
 	private String localTrabalho;
 	
 	
@@ -41,16 +38,16 @@ public class UsuarioDTO implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-//	public String getSenha() {
-//		return senha;
-//	}
-//	public void setSenha(String senha) {
-//		this.senha = senha;
-//	}
-	public Integer getTelefone() {
+	public String getSenha() {
+		return senha;
+	}
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	public String getTelefone() {
 		return telefone;
 	}
-	public void setTelefone(Integer telefone) {
+	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
 	public String getLocalTrabalho() {
@@ -59,9 +56,19 @@ public class UsuarioDTO implements Serializable{
 	public void setLocalTrabalho(String localTrabalho) {
 		this.localTrabalho = localTrabalho;
 	}
+	
+	
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	public UsuarioDTO toDTOCompleto(Usuario participante) {
 			
 			this.id = participante.getId();
+			this.username = participante.getUsername();
 			this.email = participante.getEmail();
 			this.localTrabalho = participante.getLocalTrabalho();
 			this.nome = participante.getNome();
@@ -72,6 +79,20 @@ public class UsuarioDTO implements Serializable{
 	public Long toDTOApensaId(Usuario participante) {
 		
 		return participante.getId();
+	}
+	
+	public Usuario toUsuario(UsuarioDTO usuarioDTO) {
+		
+		Usuario usuario = new Usuario();
+		
+		usuario.setNome(usuarioDTO.nome);
+		usuario.setEmail(usuarioDTO.email);
+		usuario.setUsername(usuarioDTO.username);
+		usuario.setLocalTrabalho(usuarioDTO.localTrabalho);
+		usuario.setTelefone(usuarioDTO.telefone);
+		usuario.setPassword(new BCryptPasswordEncoder().encode(this.senha));
+		
+		return usuario;
 	}
 	
 }
