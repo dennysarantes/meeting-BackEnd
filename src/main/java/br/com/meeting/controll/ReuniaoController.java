@@ -1,6 +1,9 @@
 package br.com.meeting.controll;
 
 import java.net.URI;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,10 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.meeting.dto.ReuniaoDTO;
-import br.com.meeting.dto.TokenDTO;
 import br.com.meeting.model.Item;
 import br.com.meeting.model.Reuniao;
-import br.com.meeting.model.Token;
 import br.com.meeting.model.Usuario;
 import br.com.meeting.repository.ItemRepository;
 import br.com.meeting.repository.ReuniaoRepository;
@@ -68,6 +68,68 @@ public class ReuniaoController {
 		
 		return reunioesDTO;
 	}
+	
+	
+	@GetMapping("/user-yet-prox")	
+	public List<ReuniaoDTO> listaProximasReunioesDoUsuario(){
+		
+		Usuario user = usuarioRepository.findByUsername(guardaTokenService.getToken().getUsername()).get();
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		System.out.println("nome do usuario: " + user.getUsername());
+		System.out.println("id do usuario: " + user.getId());
+		
+		List<Reuniao> reunioes = (List<Reuniao>) reuniaoRepository.findAllByUserIDMaiorQueHoje(user.getId(), LocalDate.now(), Time.valueOf(LocalTime.now())) ;		
+		List<ReuniaoDTO> reunioesDTO = ModelToDTO.deReuniaoParaReuniaoDTO(reunioes);
+		
+		return reunioesDTO;
+	}
+	
+	@GetMapping("/proximasnouser")	
+	public List<ReuniaoDTO> listaProximasReunioesNaoUsuario(){
+		
+		System.out.println("Valor do username no token do não usuário: "  + guardaTokenService.getToken().getUsername());
+		
+		Usuario user = usuarioRepository.findByUsername(guardaTokenService.getToken().getUsername()).get();
+		
+		List<Reuniao> reunioesList = reuniaoRepository.findIdsReunioesByUserMaiorQueHoje(user.getId(), LocalDate.now(), Time.valueOf(LocalTime.now()));
+		
+		List<Long> soIdsReunioes = new ArrayList<Long>(); 
+		
+		soIdsReunioes.add(0L);
+		
+		for (Reuniao reuniao :  reunioesList) {
+			soIdsReunioes.add(reuniao.getId());
+		}
+		
+		for (Long id : soIdsReunioes ) {
+			System.out.println("XXXxxxIDS REUNIAOXXXXXX");
+			System.out.println(id);
+		}
+		
+		List<Reuniao> reunioes = (List<Reuniao>) reuniaoRepository.findAllProximasByNotUserID(user.getId(), LocalDate.now(), soIdsReunioes);		
+		
+		List<ReuniaoDTO> reunioesDTO = ModelToDTO.deReuniaoParaReuniaoDTO(reunioes);
+		
+		//List<ReuniaoDTO> reunioesDTO = new ArrayList<ReuniaoDTO>();
+		
+		return reunioesDTO;
+	}
+	
+
+	@GetMapping("/user-yet-antigas")	
+	public List<ReuniaoDTO> listaAntigasReunioesDoUsuario(){
+		
+		System.out.println("Extraindo valor no controller");
+		System.out.println("Email no controller: " + guardaTokenService.getToken().getEmail());
+		
+		Usuario user = usuarioRepository.findByUsername(guardaTokenService.getToken().getUsername()).get();
+		
+		List<Reuniao> reunioes = (List<Reuniao>) reuniaoRepository.findAllByUserIDMenorQueHoje(user.getId(), LocalDate.now() ) ;		
+		List<ReuniaoDTO> reunioesDTO = ModelToDTO.deReuniaoParaReuniaoDTO(reunioes);
+		
+		return reunioesDTO;
+	}
+	
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<ReuniaoDTO> listaReuniaoPorId(@PathVariable("id") Long id) {

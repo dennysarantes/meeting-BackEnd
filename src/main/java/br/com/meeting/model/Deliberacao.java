@@ -21,6 +21,7 @@ public class Deliberacao {
 	private Long id;
 	private String descricao;
 	private Date dataLimite;
+	private String status;
 	
 	@ManyToMany
 	private List<Usuario> responsaveis;
@@ -42,6 +43,16 @@ public class Deliberacao {
 		this.responsaveis = responsaveis;
 	}
 	
+	
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -82,14 +93,6 @@ public class Deliberacao {
 		this.responsaveis = responsaveis;
 	}
 
-//	public Item getItem() {
-//		return item;
-//	}
-//
-//	public void setItem(Item item) {
-//		this.item = item;
-//	} 
-	
 	
 
 }
