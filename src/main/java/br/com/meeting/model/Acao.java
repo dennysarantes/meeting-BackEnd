@@ -2,11 +2,13 @@ package br.com.meeting.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,12 +23,15 @@ public class Acao {
 	private Date dataRegistro;
 	private Date dataRealizada;
 	
+	@OneToOne(mappedBy = "acao", cascade = CascadeType.ALL)
+	private AcaoRascunho acaoRascunho;
+	
 	@ManyToOne
 	private Usuario responsavel;
 	
 	@ManyToOne
 	@JsonIgnore
-	private Item item;
+	private Deliberacao deliberacao;
 
 	public Acao() {}
 	
@@ -37,28 +42,38 @@ public class Acao {
 	 * @param responsavel
 	 * @param item
 	 */
-	public Acao(String descricao, Date dataRegistro, Date dataRealizada, Usuario responsavel, Item item) {
+	public Acao(String descricao, Date dataRegistro, Date dataRealizada, Usuario responsavel, Deliberacao deliberacao) {
 		this.descricao = descricao;
 		this.dataRegistro = dataRegistro;
 		this.dataRealizada = dataRealizada;
 		this.responsavel = responsavel;
-		this.item = item;
+		this.deliberacao = deliberacao;
 	}
 	
-	public Acao(AcaoDTO acaoDTO, Usuario responsavel, Item item) {
+	public Acao(AcaoDTO acaoDTO, Usuario responsavel, Deliberacao deliberacao) {
 		this.descricao = acaoDTO.getDescricao();
 		this.dataRegistro = acaoDTO.getDataRegistro();
 		this.dataRealizada = acaoDTO.getDataRealizada();
 		this.responsavel = responsavel;
-		this.item = item;
+		this.deliberacao = deliberacao;
+	}
+	
+	
+	
+	public AcaoRascunho getAcaoRascunho() {
+		return acaoRascunho;
 	}
 
-	public Item getItem() {
-		return item;
+	public void setAcaoRascunho(AcaoRascunho acaoRascunho) {
+		this.acaoRascunho = acaoRascunho;
 	}
 
-	public void setItem(Item item) {
-		this.item = item;
+	public Deliberacao getDeliberacao() {
+		return deliberacao;
+	}
+
+	public void setDeliberacao(Deliberacao deliberacao) {
+		this.deliberacao = deliberacao;
 	}
 
 	public Long getId() {

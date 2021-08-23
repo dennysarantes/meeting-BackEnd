@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.meeting.model.Acao;
+import br.com.meeting.model.Deliberacao;
 import br.com.meeting.model.Item;
 import br.com.meeting.model.Usuario;
 
@@ -14,9 +15,12 @@ public class AcaoDTO {
 	private Date dataRegistro;
 	private Date dataRealizada;
 	
+	private AcaoRascunhoDTO acaoRascunhoDTO; 
+	
 	private Long responsavel;
 	
-	private Long item;
+	private Long deliberacao;
+	
 
 	
 	
@@ -26,14 +30,26 @@ public class AcaoDTO {
 	
 	
 
-	public Long getItem() {
-		return item;
+	public AcaoRascunhoDTO getAcaoRascunhoDTO() {
+		return acaoRascunhoDTO;
 	}
 
 
 
-	public void setItem(Long itemId) {
-		this.item = itemId;
+	public void setAcaoRascunhoDTO(AcaoRascunhoDTO acaoRascunhoDTO) {
+		this.acaoRascunhoDTO = acaoRascunhoDTO;
+	}
+
+
+
+	public Long getDeliberacao() {
+		return deliberacao;
+	}
+
+
+
+	public void setDeliberacao(Long deliberacaoId) {
+		this.deliberacao = deliberacaoId;
 	}
 
 
@@ -81,24 +97,29 @@ public class AcaoDTO {
 		this.dataRegistro = acao.getDataRegistro();
 		this.descricao = acao.getDescricao();
 		this.id = acao.getId();
-		//this.responsavel = null;
 		this.responsavel = acao.getResponsavel().getId();
-		this.item = acao.getItem().getId();
-		//this.responsavel = new UsuarioDTO().toDTO2(acao.getResponsavel().getId());
-		//this.item = new ItemDTO().toDTO(acao.getItem());
+		this.deliberacao = acao.getDeliberacao().getId();
+		
+		try {
+			this.acaoRascunhoDTO = new AcaoRascunhoDTO().toDTO(acao.getAcaoRascunho());
+			return this;
+		} catch (Exception e) {
+			this.acaoRascunhoDTO = null;
+			return this;
+		}
 		
 		
-		return this;
+		
 	}
 
 
 
-	public Acao toAcao(Acao acao, Usuario responsavel, Item item) {
+	public Acao toAcao(Acao acao, Usuario responsavel, Deliberacao deliberacao) {
 		
 		acao.setDataRealizada(this.dataRealizada);
 		acao.setDataRegistro(this.dataRegistro);
 		acao.setDescricao(this.descricao);
-		acao.setItem(item);
+		acao.setDeliberacao(deliberacao);
 		acao.setResponsavel(responsavel);
 		
 		return acao;

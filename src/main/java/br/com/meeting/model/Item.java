@@ -36,9 +36,7 @@ public class Item {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
 	private List<Deliberacao> deliberacoes;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
-	private List<Acao> acoes;
+
 	
 	public Item() {}
 	
@@ -115,13 +113,7 @@ public class Item {
 		this.deliberacoes = deliberacoes;
 	}
 
-	public List<Acao> getAcoes() {
-		return acoes;
-	}
-
-	public void setAcoes(List<Acao> acoes) {
-		this.acoes = acoes;
-	}
+	
 	
 	
 	

@@ -20,9 +20,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.meeting.dto.AcaoDTO;
 import br.com.meeting.model.Acao;
+import br.com.meeting.model.Deliberacao;
 import br.com.meeting.model.Item;
 import br.com.meeting.model.Usuario;
 import br.com.meeting.repository.AcaoRepository;
+import br.com.meeting.repository.DeliberacaoRepository;
 import br.com.meeting.repository.ItemRepository;
 import br.com.meeting.repository.UsuarioRepository;
 
@@ -38,6 +40,10 @@ public class AcaoController {
 	
 	@Autowired
 	private ItemRepository itemRepository;
+	
+	@Autowired
+	private DeliberacaoRepository deliberacaoRepository;
+	
 
 	@GetMapping("")
 	public  List<AcaoDTO> listaTodasAcoes(){
@@ -70,9 +76,9 @@ public class AcaoController {
 			
 			Usuario responsavel = usuarioRepository.findById(acaoDTO.getResponsavel()).get();
 			
-			Item item = itemRepository.findById(acaoDTO.getItem()).get();
+			Deliberacao deliberacao = deliberacaoRepository.findById(acaoDTO.getDeliberacao()).get();
 			
-			Acao acao = new Acao(acaoDTO, responsavel, item );
+			Acao acao = new Acao(acaoDTO, responsavel, deliberacao );
 			
 			try {
 				acaoRepository.save(acao);
@@ -109,11 +115,11 @@ public class AcaoController {
 				@PathVariable("id") Long id) {
 			
 			Usuario responsavel = usuarioRepository.findById(acaoDTO.getResponsavel()).get();
-			Item item = itemRepository.findById(acaoDTO.getItem()).get();
+			Deliberacao deliberacao = deliberacaoRepository.findById(acaoDTO.getDeliberacao()).get();
 			
 			Acao acao = acaoRepository.findById(id).get(); 
 			
-			acao = acaoDTO.toAcao(acao, responsavel, item);
+			acao = acaoDTO.toAcao(acao, responsavel, deliberacao);
 			
 			try {
 				acaoRepository.save(acao);

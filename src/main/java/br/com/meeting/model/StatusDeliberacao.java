@@ -1,0 +1,13 @@
+package br.com.meeting.model;
+
+public enum StatusDeliberacao {
+
+	PENDENTE,
+	PENDENTE_COM_ATRASO,
+	PENDENTE_EM_DIA,
+	EM_TRATAMENTO_COM_ATRASO,
+	EM_TRATAMENTO_EM_DIA,
+	CONCLUIDA_COM_ATRASO,
+	CONCLUIDA_EM_DIA,
+	CANCELADA	
+}

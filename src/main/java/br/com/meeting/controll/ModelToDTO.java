@@ -31,6 +31,15 @@ public class ModelToDTO {
 		return reunioesDTO;
 		
 	}
+	
+	
+	public static ReuniaoDTO deReuniaoUnidParaReuniaoDTO(Reuniao reuniao) {
+		
+		ReuniaoDTO reuniaoDTO = new ReuniaoDTO();
+		
+		return reuniaoDTO.toDTO(reuniao);
+	}
+	
 
 	public static List<AcaoDTO> deAcaoParaAcaoDTO(List<Acao> acoes) {
 		
@@ -57,6 +66,18 @@ public class ModelToDTO {
 			return itemDTO;
 			
 		}
+	
+	public static List<ItemDTO> deItemParaItemDTOTela(List<Item> itens) {
+		
+		List<ItemDTO> itemDTO = new ArrayList<ItemDTO>();
+		
+		itens.forEach(item -> {
+			itemDTO.add(new ItemDTO().toDTOparaTela(item));
+		});
+		
+		return itemDTO;
+		
+	}
 	
 	
 	public static List<DeliberacaoDTO> deDeliberacaoParaDeliberacaoDTO(List<Deliberacao> deliberacaoes) {

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import br.com.meeting.model.Acao;
 import br.com.meeting.model.Item;
 import br.com.meeting.model.StatusItem;
 import br.com.meeting.model.Usuario;
@@ -34,8 +35,50 @@ public class ItemDTO implements Serializable{
 	private List<Long> deliberacoes;
 	
 	private List<Long> acoes;
+
+	private UsuarioDTO responsavelC;
+
+	private UsuarioDTO responsavelCadastroC;
+
+	private ArrayList<AcaoDTO> acoesC;
+
+	private ArrayList<DeliberacaoDTO> deliberacoesC;
 	
 	
+	
+	
+	public ArrayList<DeliberacaoDTO> getDeliberacoesC() {
+		return deliberacoesC;
+	}
+
+	public void setDeliberacoesC(ArrayList<DeliberacaoDTO> deliberacoesC) {
+		this.deliberacoesC = deliberacoesC;
+	}
+
+	public ArrayList<AcaoDTO> getAcoesC() {
+		return acoesC;
+	}
+
+	public void setAcoesC(ArrayList<AcaoDTO> acoesC) {
+		this.acoesC = acoesC;
+	}
+
+	public UsuarioDTO getResponsavelC() {
+		return responsavelC;
+	}
+
+	public void setResponsavelC(UsuarioDTO responsavelC) {
+		this.responsavelC = responsavelC;
+	}
+
+	public UsuarioDTO getResponsavelCadastroC() {
+		return responsavelCadastroC;
+	}
+
+	public void setResponsavelCadastroC(UsuarioDTO responsavelCadastroC) {
+		this.responsavelCadastroC = responsavelCadastroC;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -116,9 +159,9 @@ public class ItemDTO implements Serializable{
 		
 		this.acoes = new ArrayList<Long>();
 		
-		item.getAcoes().forEach(acao -> {
-			this.acoes.add(new AcaoDTO().toDTO(acao).getId());
-		});
+//		item.getAcoes().forEach(acao -> {
+//			this.acoes.add(new AcaoDTO().toDTO(acao).getId());
+//		});
 		
 		this.deliberacoes = new ArrayList<Long>();		
 		
@@ -128,6 +171,33 @@ public class ItemDTO implements Serializable{
 		
 		return this;
 	}
+	
+public ItemDTO toDTOparaTela (Item item) {
+		
+		this.dataCadastro = item.getDataCadastro();
+		this.descricao = item.getDescricao();
+		this.id = item.getId();
+		this.responsavelC = new UsuarioDTO().toDTOCompleto(item.getResponsavel());
+		this.responsavelCadastroC = new UsuarioDTO().toDTOCompleto(item.getResponsavelCadastro());
+		this.status = item.getStatus();
+		this.titulo = item.getTitulo();
+		
+//		this.acoesC = new ArrayList<AcaoDTO>();
+//		
+//		item.getDeliberacoes().forEach(deliberacao -> {
+//			this.acoesC.add(new AcaoDTO().toDTO(deliberacao));
+//		});
+		
+		this.deliberacoesC = new ArrayList<DeliberacaoDTO>();		
+		
+		item.getDeliberacoes().forEach(deliberacao ->{
+			this.deliberacoesC.add(new DeliberacaoDTO().toDTO(deliberacao));
+		});
+		
+		return this;
+	}
+	
+	
 	
 	public Item toItem (Item item, Usuario responsavelDTO, Usuario responsavelCadastrado) {
 		

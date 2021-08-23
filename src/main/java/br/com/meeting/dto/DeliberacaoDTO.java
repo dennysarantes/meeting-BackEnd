@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import br.com.meeting.model.Acao;
 import br.com.meeting.model.Deliberacao;
 import br.com.meeting.model.Item;
 import br.com.meeting.model.Usuario;
@@ -20,12 +21,44 @@ public class DeliberacaoDTO {
 	private Long id;
 	private String descricao;
 	private Date dataLimite;
-	
+	private Date dataRegistro;
+	private String status;
+	private List<AcaoDTO> acoes;
+ 	
 	private List<Long> responsaveis;
 	
 	private Long item;
 	
+	
+	
+	
+	public List<AcaoDTO> getAcoes() {
+		return acoes;
+	}
 
+	public void setAcoes(List<AcaoDTO> acoes) {
+		this.acoes = acoes;
+	}
+
+	public Date getDataRegistro() {
+		return dataRegistro;
+	}
+
+	public void setDataRegistro(Date dataRegistro) {
+		this.dataRegistro = dataRegistro;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Long getItem() {
 		return item;
@@ -73,9 +106,17 @@ public class DeliberacaoDTO {
 	public DeliberacaoDTO toDTO(Deliberacao deliberacao) {
 		
 		this.dataLimite = deliberacao.getDataLimite();
+		this.dataRegistro = deliberacao.getDataRegistro();
 		this.descricao = deliberacao.getDescricao();
 		this.id = deliberacao.getId();
 		this.item = deliberacao.getItem().getId();
+		this.status = deliberacao.getStatus();		
+		
+		this.acoes = new ArrayList<AcaoDTO>();
+		
+		deliberacao.getAcoes().forEach(acao ->{
+			this.acoes.add(new AcaoDTO().toDTO(acao));
+		});
 		
 		
 		this.responsaveis = new ArrayList<Long>();
@@ -84,7 +125,10 @@ public class DeliberacaoDTO {
 			this.responsaveis.add(new UsuarioDTO().toDTOApensaId(responsavel));
 		});
 		
-		
+		this.acoes = new ArrayList<AcaoDTO>();
+		deliberacao.getAcoes().forEach(acao ->{
+			this.acoes.add(new AcaoDTO().toDTO(acao));
+		});
 		
 		return this;
 	}
@@ -95,6 +139,7 @@ public class DeliberacaoDTO {
 		deliberacao.setDescricao(this.descricao);
 		deliberacao.setItem(item);
 		deliberacao.setResponsaveis(responsaveis);
+		deliberacao.setStatus(this.status);
 		
 		return deliberacao;
 	} 

@@ -2,13 +2,14 @@ package br.com.meeting.dto;
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import br.com.meeting.model.Confirmacao;
 import br.com.meeting.model.Item;
 import br.com.meeting.model.Reuniao;
 import br.com.meeting.model.StatusReuniao;
@@ -20,8 +21,8 @@ public class ReuniaoDTO {
 	
 	private Long id;
 	private String titulo;
-	private LocalDate dataCadastro;
-	private LocalDate dataAgendamento;
+	private LocalDateTime dataCadastro;
+	private LocalDateTime dataAgendamento;
 	private Time horarioAgendamento; //Time.valueOf("18:45:20");
 	private Time duracao;
 	private String local;
@@ -34,6 +35,17 @@ public class ReuniaoDTO {
 	
 	private List<Long> itens;
 	
+	private List<ConfirmacaoDTO> confirmacoes; 
+	
+	
+	public List<ConfirmacaoDTO> getConfirmacoes() {
+		return confirmacoes;
+	}
+
+	public void setConfirmacoes(List<ConfirmacaoDTO> confirmacoes) {
+		this.confirmacoes = confirmacoes;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -72,7 +84,7 @@ public class ReuniaoDTO {
 		return dataCadastro.toString();
 	}
 
-	public void setDataCadastro(LocalDate dataCadastro) {
+	public void setDataCadastro(LocalDateTime dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
 
@@ -80,7 +92,7 @@ public class ReuniaoDTO {
 		return dataAgendamento.toString();
 	}
 
-	public void setDataAgendamento(LocalDate dataAgendamento) {
+	public void setDataAgendamento(LocalDateTime dataAgendamento) {
 		this.dataAgendamento = dataAgendamento;
 	}
 
@@ -146,7 +158,15 @@ public class ReuniaoDTO {
 		reuniao.getItens().forEach(item -> {
 			this.itens.add(new ItemDTO().toDTO(item).getId());
 		});
+		
+		//this.confirmacoes = reuniao.getConfirmacoes();
 
+		this.confirmacoes = new ArrayList<ConfirmacaoDTO>();
+		
+		reuniao.getConfirmacoes().forEach(confirmacao -> {
+			this.confirmacoes.add(new ConfirmacaoDTO().confirmacaoToDTO(confirmacao));
+		});
+		
 		return this;
 	}
 

@@ -1,18 +1,18 @@
 package br.com.meeting.security.token;
 
-import java.sql.Time;
-import java.time.Clock;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import br.com.meeting.model.Deliberacao;
 import br.com.meeting.model.Reuniao;
 import br.com.meeting.model.Token;
 import br.com.meeting.model.Usuario;
@@ -59,16 +59,19 @@ public class TokenService {
 			List<Reuniao> proxReunioesDoUsuario = 
 									reuniaoRepository.findAllByUserIDMaiorQueHoje(
 														usuarioLogado.getId(),
-														LocalDate.now(),
-														Time.valueOf(LocalTime.now()));
+														LocalDateTime.now());
 			
 			//Pega a quantidade de deliberações que o usuário consta como responsável
-						
-			Integer qtdAcoesPendentes = deliberacaoRepository.findQtdByStatus("PENDENTE", usuarioLogado.getId());
+					
+			List<Deliberacao> findAtrasadasByResponsaveisCustom = deliberacaoRepository.findAtrasadasByResponsaveisCustom(usuarioLogado.getId(), java.sql.Date.valueOf(LocalDate.now()), "ATRASADO");
 			
-			Integer qtdAcoesAtrasadas = deliberacaoRepository.findQtdByStatus("ATRASADO", usuarioLogado.getId());
+			Integer qtdAcoesPendentes = findAtrasadasByResponsaveisCustom.size();
+			Integer qtdAcoesAtrasadas = findAtrasadasByResponsaveisCustom.size();
 			
-			Integer qtdReunioesFuturas = reuniaoRepository.findQtdByUser(usuarioLogado.getId(), LocalDate.now());
+//			Integer qtdAcoesPendentes = deliberacaoRepository.findQtdByStatus("PENDENTE", usuarioLogado.getId(), java.sql.Date.valueOf(LocalDate.now()) );
+//			Integer qtdAcoesAtrasadas = deliberacaoRepository.findQtdByStatus("ATRASADO", usuarioLogado.getId(), java.sql.Date.valueOf(LocalDate.now()) );
+			
+			Integer qtdReunioesFuturas = reuniaoRepository.findQtdByUser(usuarioLogado.getId(), LocalDateTime.now());
 			
 			//Verifica se existe reuniões futuras e pega a quantidade de itens da próxima reunião. 
 			try {
