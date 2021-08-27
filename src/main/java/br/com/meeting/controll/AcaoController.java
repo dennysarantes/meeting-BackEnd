@@ -1,7 +1,10 @@
 package br.com.meeting.controll;
 
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -20,6 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.meeting.dto.AcaoDTO;
 import br.com.meeting.model.Acao;
+import br.com.meeting.model.AcaoRascunho;
 import br.com.meeting.model.Deliberacao;
 import br.com.meeting.model.Item;
 import br.com.meeting.model.Usuario;
@@ -27,6 +31,7 @@ import br.com.meeting.repository.AcaoRepository;
 import br.com.meeting.repository.DeliberacaoRepository;
 import br.com.meeting.repository.ItemRepository;
 import br.com.meeting.repository.UsuarioRepository;
+import br.com.meeting.service.GuardaTokenService;
 
 @RestController
 @RequestMapping("api/acao")
@@ -43,6 +48,9 @@ public class AcaoController {
 	
 	@Autowired
 	private DeliberacaoRepository deliberacaoRepository;
+	
+	@Autowired
+	private GuardaTokenService guardaTokenService;
 	
 
 	@GetMapping("")
@@ -95,6 +103,51 @@ public class AcaoController {
 				return ResponseEntity.internalServerError().build();
 			}
 		}
+		
+		@PostMapping("/novo/rascunho/{idDeliberacao}")
+		@Transactional
+		public Integer cadastrarAcaoNovaComRascunho(@PathVariable("idDeliberacao") Long idDeliberacao,
+				@RequestBody AcaoDTO acaoDTO) {
+			
+			Long userId = Long.parseLong(this.guardaTokenService.getToken().getSub());
+			Usuario usuario = usuarioRepository.findById(userId).get();
+			
+			Deliberacao deliberacao = deliberacaoRepository.findById(idDeliberacao).get();
+			
+			AcaoRascunho acaoRascunho = new AcaoRascunho();
+			
+			acaoRascunho.setDataModificacao(LocalDateTime.now());
+			acaoRascunho.setDescricao(acaoDTO.getDescricao());
+			
+			
+			acaoRascunho.setDataRealizada(convertToLocalDateTimeViaSqlTimestamp(acaoDTO.getDataRealizada()));
+			
+			Acao acao = acaoDTO.toAcaoNovo(usuario, deliberacao);
+			
+			acao.setDescricao(null);
+			acao.setDataRealizada(convertToDateViaSqlTimestamp(acaoRascunho.getDataRealizada()));
+			
+			acao.setAcaoRascunho(acaoRascunho);
+			
+			List<Acao> acaoList = new ArrayList<Acao>();
+			acaoList.add(acao);
+			
+			deliberacao.setAcoes(acaoList);
+						
+			try {
+					
+					deliberacaoRepository.save(deliberacao);
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
+			
+			
+			
+			return null;
+			
+		}
 	
 		@DeleteMapping("/{id}")
 		@Transactional
@@ -128,5 +181,14 @@ public class AcaoController {
 			} catch (Exception e) {
 				return ResponseEntity.notFound().build();
 			}
+		}
+		
+		private LocalDateTime convertToLocalDateTimeViaSqlTimestamp(Date dateToConvert) {
+		    return new java.sql.Timestamp(
+		      dateToConvert.getTime()).toLocalDateTime();
+		}
+		
+		public Date convertToDateViaSqlTimestamp(LocalDateTime dateToConvert) {
+		    return java.sql.Timestamp.valueOf(dateToConvert);
 		}
 }

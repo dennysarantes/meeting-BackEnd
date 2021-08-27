@@ -125,6 +125,18 @@ public class AcaoDTO {
 		return acao;
 	}
 	
+	public Acao toAcaoNovo(Usuario responsavel, Deliberacao deliberacao) {
+		Acao acao = new Acao();
+		
+		acao.setDataRealizada(this.dataRealizada);
+		acao.setDataRegistro(this.dataRegistro);
+		acao.setDescricao(this.descricao);
+		acao.setDeliberacao(deliberacao);
+		acao.setResponsavel(responsavel);
+		
+		return acao;
+	}
+	
 	
 	
 }
